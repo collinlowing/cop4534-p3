@@ -5,7 +5,7 @@
 #include "gtest/gtest.h"
 #include "../MatrixManager.hpp"
 
-TEST(MatrixManagerTests, getPercentIdleTime) {
+TEST(MatrixManagerTests, getMatrix) {
     int numOfCities = 5;
     std::vector<std::vector<double>> matrix = MatrixManager::getMatrix(numOfCities, "distances.txt");
 

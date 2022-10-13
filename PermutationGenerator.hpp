@@ -16,19 +16,13 @@
 class PermutationGenerator {
 private:
     std::string distancesFileName = "distance.txt";
-    int numOfCities;
-    int generationSize;
-    int numOfGenerations;
-    double mutationPercentage;
+    std::vector<std::vector<int>> permutations;
 public:
-    //PermutationGenerator(int numOfCities, int generationSize, int numOfGenerations, double mutationPercentage);
-    //int *getNextPermutation(int (*s), int arrayLength);
-
-    //void printS(int *s, int size);
-
     void vectorPermutation(std::vector<int> &now, std::vector<int> next);
 
     static void printVector(const std::vector<int> &vect);
+
+    std::vector<std::vector<int>> &getPermutations();
 };
 
 
