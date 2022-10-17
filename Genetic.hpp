@@ -21,6 +21,8 @@ private:
 public:
     Genetic(int numOfCities, int generationSize, int numOfGenerations, double mutationPercentage);
     std::vector<int> performGenetic();
+    std::vector<std::vector<int>> mergeMatrix(std::vector<std::vector<int>> vectorA, std::vector<std::vector<int>> vectorB);
+    std::vector<int> mutateRoute(std::vector<int> route);
 };
 
 
