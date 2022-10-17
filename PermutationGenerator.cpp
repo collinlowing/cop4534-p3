@@ -9,7 +9,7 @@
 #include "PermutationGenerator.hpp"
 
 // brute force method
-void PermutationGenerator::vectorPermutation(std::vector<int> &now, std::vector<int> next) {
+void PermutationGenerator::bruteForcePermutation(std::vector<int> &now, std::vector<int> next) {
     int size = now.size();
     if (size > 0) {
         for (int count = 0; count < size; count++) {
@@ -33,7 +33,7 @@ void PermutationGenerator::vectorPermutation(std::vector<int> &now, std::vector<
             }
 
             next.push_back(*it1);
-            vectorPermutation(vt, next);
+            bruteForcePermutation(vt, next);
             next.pop_back();
         }
 

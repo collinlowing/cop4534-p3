@@ -18,7 +18,7 @@ private:
     std::string distancesFileName = "distance.txt";
     std::vector<std::vector<int>> permutations;
 public:
-    void vectorPermutation(std::vector<int> &now, std::vector<int> next);
+    void bruteForcePermutation(std::vector<int> &now, std::vector<int> next);
 
     static void printVector(const std::vector<int> &vect);
 
