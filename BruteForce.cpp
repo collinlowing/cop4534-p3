@@ -52,6 +52,8 @@ std::vector<int> BruteForce::performBruteForce() {
         }
         index++;
     }
+    PermutationGenerator::printVector(permutationMatrix[smallestIndex]);
+    std::cout << "optimal route distance total: " << smallestDistance << std::endl;
 
     return permutationMatrix[smallestIndex];
 }

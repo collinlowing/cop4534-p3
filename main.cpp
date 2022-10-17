@@ -38,7 +38,7 @@ int main() {
             std::chrono::duration<double> >(finish - start).count();
 
     // print out brute force results
-    PermutationGenerator::printVector(bruteForceOptimalPath);
+    //PermutationGenerator::printVector(bruteForceOptimalPath);
     std::cout << "finished in " << elapsed_seconds << " seconds" << std::endl;
 
     return 0;
