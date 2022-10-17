@@ -39,6 +39,7 @@ void PermutationGenerator::bruteForcePermutation(std::vector<int> &now, std::vec
 
     } else {
         //PermutationGenerator::printVector(next);
+        next.push_back(0);
         permutations.push_back(next);
     }
 }

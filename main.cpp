@@ -7,6 +7,9 @@
 ***************************************************************/
 
 #include <iostream>
+#include <chrono>
+#include "BruteForce.hpp"
+#include "Genetic.hpp"
 
 int main() {
     int numOfCities;
@@ -25,6 +28,18 @@ int main() {
 
     std::cout << "What percent of generations will be mutations?" << std::endl;
     std::cin >> mutationPercentage;
+
+    // get bruteforce results
+    BruteForce bruteForce(numOfCities);
+    auto start = std::chrono::steady_clock::now();
+    std::vector<int> bruteForceOptimalPath = bruteForce.performBruteForce();
+    auto finish = std::chrono::steady_clock::now();
+    double elapsed_seconds = std::chrono::duration_cast<
+            std::chrono::duration<double> >(finish - start).count();
+
+    // print out brute force results
+    PermutationGenerator::printVector(bruteForceOptimalPath);
+    std::cout << "finished in " << elapsed_seconds << " seconds" << std::endl;
 
     return 0;
 }

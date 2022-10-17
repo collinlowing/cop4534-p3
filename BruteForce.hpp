@@ -9,9 +9,16 @@
 #ifndef COP4534_P3_BRUTEFORCE_HPP
 #define COP4534_P3_BRUTEFORCE_HPP
 
+#include <cfloat>
+#include "PermutationGenerator.hpp"
+#include "MatrixManager.hpp"
 
 class BruteForce {
-
+private:
+    int numOfCities;
+public:
+    BruteForce(int numOfCities);
+    std::vector<int> performBruteForce();
 };
 
 
