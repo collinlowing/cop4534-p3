@@ -7,3 +7,14 @@
 ***************************************************************/
 
 #include "Genetic.hpp"
+
+Genetic::Genetic(int numOfCities, int generationSize, int numOfGenerations, double mutationPercentage) {
+    this->numOfCities = numOfCities;
+    this->generationSize = generationSize;
+    this->numOfGenerations = numOfGenerations;
+    this->mutationPercentage = mutationPercentage;
+}
+
+std::vector<int> Genetic::performGenetic() {
+    return std::vector<int>();
+}
