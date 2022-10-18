@@ -34,12 +34,12 @@ int main() {
     auto start = std::chrono::steady_clock::now();
     std::vector<int> bruteForceOptimalPath = bruteForce.performBruteForce();
     auto finish = std::chrono::steady_clock::now();
-    double elapsed_seconds = std::chrono::duration_cast<
-            std::chrono::duration<double> >(finish - start).count();
+    double elapsedSeconds =
+            std::chrono::duration_cast<std::chrono::duration<double>>(finish - start).count();
 
     // print out brute force results
     //PermutationGenerator::printVector(bruteForceOptimalPath);
-    std::cout << "finished in " << elapsed_seconds << " seconds" << std::endl;
+    std::cout << "finished in " << elapsedSeconds << " seconds" << std::endl;
 
     return 0;
 }
