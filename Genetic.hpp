@@ -11,6 +11,7 @@
 
 #include "PermutationGenerator.hpp"
 #include "MatrixManager.hpp"
+#include <random>
 
 class Genetic {
 private:
@@ -23,6 +24,7 @@ public:
     std::vector<int> performGenetic();
     std::vector<std::vector<int>> mergeMatrix(std::vector<std::vector<int>> vectorA, std::vector<std::vector<int>> vectorB);
     std::vector<int> mutateRoute(std::vector<int> route);
+    static int getRandomIndex(int min, int max);
 };
 
 

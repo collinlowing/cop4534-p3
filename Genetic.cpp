@@ -42,7 +42,28 @@ Genetic::mergeMatrix(std::vector<std::vector<int>> vectorA, std::vector<std::vec
 }
 
 std::vector<int> Genetic::mutateRoute(std::vector<int> route) {
-    return std::vector<int>();
+    // get random index excluding start and end as that is always 0
+    int index1 = Genetic::getRandomIndex(1, route.size() - 1);
+
+    // get the nextPermutation index
+    int index2;
+    // index must be different than first index
+    do {
+        index2 = Genetic::getRandomIndex(1, route.size() - 1);
+    } while (index1 == index2);
+
+    // swaps the two random indexes
+    std::swap(route.at(index1), route.at(index2));
+
+    return route;
+}
+
+int Genetic::getRandomIndex(int min, int max) {
+    std::random_device rd; // obtain a random number from hardware
+    std::mt19937 gen(rd()); // input seed into generator
+    std::uniform_int_distribution<> distr(min, max); // define the range
+
+    return distr(gen);
 }
 
 

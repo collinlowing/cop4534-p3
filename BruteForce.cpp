@@ -24,7 +24,7 @@ std::vector<int> BruteForce::performBruteForce() {
     }
 
     // get all possible permutations
-    pg.bruteForcePermutation(initialRoute, perm);
+    pg.generateAllPermutation(initialRoute, perm);
     std::vector<std::vector<int>> permutationMatrix = pg.getPermutations();
 
     // get distances
