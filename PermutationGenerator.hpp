@@ -17,7 +17,7 @@ class PermutationGenerator {
 private:
     std::string distancesFileName = "distance.txt";
     std::vector<std::vector<int>> permutations;
-    std::vector<int> nextPermutation;
+    int currentIndex = 0;
 public:
     std::vector<int> generateAllPermutation(std::vector<int> &now, std::vector<int> next);
 

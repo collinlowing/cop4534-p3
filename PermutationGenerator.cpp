@@ -11,6 +11,7 @@
 // brute force method
 std::vector<int> PermutationGenerator::generateAllPermutation(std::vector<int> &now, std::vector<int> next) {
     int size = now.size();
+
     if (size > 0) {
         for (int count = 0; count < size; count++) {
             std::vector<int> vt;
@@ -47,7 +48,9 @@ std::vector<int> PermutationGenerator::generateAllPermutation(std::vector<int> &
 }
 
 std::vector<int> PermutationGenerator::getNextPermutation(std::vector<int>& route) {
-    this->nextPermutation = route;
+    std::vector<int> permutation = permutations[currentIndex];
+    currentIndex++;
+    return permutation;
 }
 
 void PermutationGenerator::printVector(const std::vector<int> &vect) {
