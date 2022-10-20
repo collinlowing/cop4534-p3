@@ -8,49 +8,37 @@
 
 #include "PermutationGenerator.hpp"
 
-// brute force method
-std::vector<int> PermutationGenerator::generateAllPermutation(std::vector<int> &now, std::vector<int> next) {
-    int size = now.size();
+std::vector<int> PermutationGenerator::getNextPermutation() {
+    int vectorSize = perm.size();
 
-    if (size > 0) {
-        for (int count = 0; count < size; count++) {
-            std::vector<int> vt;
-
-            auto it = now.begin();
-            for (int count1 = 0; count1 < size; count1++) {
-                if (count1 == count) {
-                    it++;
-                    continue;
-                } else {
-                    vt.push_back(*it);
-                }
-                it++;
-            }
-
-            auto it1 = now.begin();
-            --it1;
-            for (int cnt2 = 0; cnt2 <= count; ++cnt2) {
-                ++it1;
-            }
-
-            next.push_back(*it1);
-            generateAllPermutation(vt, next);
-            next.pop_back();
-        }
-
-    } else {
-        //PermutationGenerator::printVector(nextPermutation);
-        next.push_back(0);
-        permutations.push_back(next);
-        return next;
+    int m, k, p , q;
+    m = vectorSize - 2;
+    while(perm[m]>perm[m+1])
+    {
+        m = m - 1;
     }
-    return {};
+    k = vectorSize - 1;
+    while(perm[m] > perm[k])
+    {
+        k = k - 1;
+    }
+    swap(m,k);
+    p = m + 1;
+    q = vectorSize - 1;
+    while( p < q)
+    {
+        swap(p,q);
+        p++;
+        q--;
+    }
+    printVector(perm);
+    return perm;
 }
 
-std::vector<int> PermutationGenerator::getNextPermutation(std::vector<int>& route) {
-    std::vector<int> permutation = permutations[currentIndex];
-    currentIndex++;
-    return permutation;
+void PermutationGenerator::swap(int a, int b) {
+    int temp = perm[a];
+    perm[a] = perm[b];
+    perm[b] = temp;
 }
 
 void PermutationGenerator::printVector(const std::vector<int> &vect) {
@@ -61,6 +49,7 @@ void PermutationGenerator::printVector(const std::vector<int> &vect) {
     std::cout << std::endl;
 }
 
-std::vector<std::vector<int>> &PermutationGenerator::getPermutations() {
-    return permutations;
+PermutationGenerator::PermutationGenerator(std::vector<int> &perm) {
+    this->perm = perm;
 }
+

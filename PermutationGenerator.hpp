@@ -15,17 +15,15 @@
 
 class PermutationGenerator {
 private:
-    std::string distancesFileName = "distance.txt";
-    std::vector<std::vector<int>> permutations;
-    int currentIndex = 0;
+    std::vector<int> perm;
 public:
-    std::vector<int> generateAllPermutation(std::vector<int> &now, std::vector<int> next);
+    PermutationGenerator(std::vector<int>& perm);
 
     static void printVector(const std::vector<int> &vect);
 
-    std::vector<std::vector<int>> &getPermutations();
+    std::vector<int> getNextPermutation();
 
-    std::vector<int> getNextPermutation(std::vector<int>& route);
+    void swap(int a, int b);
 };
 
 
