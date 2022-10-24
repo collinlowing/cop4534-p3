@@ -8,12 +8,16 @@
 
 #include "PermutationGenerator.hpp"
 
+PermutationGenerator::PermutationGenerator(std::vector<int> perm) {
+    this->perm = perm;
+}
+
 std::vector<int> PermutationGenerator::getNextPermutation() {
     int vectorSize = perm.size();
 
     int m, k, p , q;
     m = vectorSize - 2;
-    while(perm[m]>perm[m+1])
+    while(perm[m] > perm[m+1])
     {
         m = m - 1;
     }
@@ -25,13 +29,13 @@ std::vector<int> PermutationGenerator::getNextPermutation() {
     swap(m,k);
     p = m + 1;
     q = vectorSize - 1;
-    while( p < q)
+    while(p < q)
     {
         swap(p,q);
         p++;
         q--;
     }
-    printVector(perm);
+    //printVector(perm);
     return perm;
 }
 
@@ -41,15 +45,25 @@ void PermutationGenerator::swap(int a, int b) {
     perm[b] = temp;
 }
 
-void PermutationGenerator::printVector(const std::vector<int> &vect) {
+void PermutationGenerator::printVector(const std::vector<int> vect) {
     std::cout << "vector contains: ";
     for (int i: vect) {
-        std::cout << i << " ";
+        std::cout << i << "
     }
     std::cout << std::endl;
 }
 
-PermutationGenerator::PermutationGenerator(std::vector<int> &perm) {
-    this->perm = perm;
-}
+int PermutationGenerator::getNumOfPermutations(int numOfCities) {
+    int factorial = 1;
 
+    if(numOfCities < 0) {
+        std::cout << "the number of cities to permute must be 0 or greater" << std::endl;
+        return -1;
+    }
+
+    for(int i = 1; i <= numOfCities; i++) {
+        factorial *= i;
+    }
+
+    return factorial;
+}
