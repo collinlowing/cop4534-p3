@@ -35,7 +35,7 @@ std::vector<int>& PermutationGenerator::getNextPermutation() {
         p++;
         q--;
     }
-    printVector(perm);
+    //printVector(perm);
     return perm;
 }
 
