@@ -8,12 +8,13 @@
 
 #include "PermutationGenerator.hpp"
 
-PermutationGenerator::PermutationGenerator(std::vector<int>& perm) {
+PermutationGenerator::PermutationGenerator(int *perm, int numOfCities) {
     this->perm = perm;
+    this->numOfCities = numOfCities;
 }
 
 std::vector<int>& PermutationGenerator::getNextPermutation() {
-    int vectorSize = perm.size();
+    int vectorSize = perm.length();
 
     int m, k, p , q;
     m = vectorSize - 2;

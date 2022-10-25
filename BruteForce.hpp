@@ -16,6 +16,7 @@
 class BruteForce {
 private:
     int numOfCities;
+    MatrixManager mm;
 public:
     BruteForce(int numOfCities);
     std::vector<int> performBruteForce();

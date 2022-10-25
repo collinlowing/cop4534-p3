@@ -13,12 +13,14 @@
 #include "FileParser.hpp"
 
 class MatrixManager {
+private:
+    double distances[20][20];
 public:
-    static double addDistances(std::vector<double>& route);
-
     static bool isSmallerDistance(double a, double b);
 
-    static std::vector<std::vector<double>> getMatrix(int numOfCities, std::string distancesFileName);
+    void generateAdjacencyMatrix(int numOfCities, std::string distancesFileName);
+
+    double computeDistance(const int *route, int numOfCities);
 };
 
 

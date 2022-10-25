@@ -15,9 +15,10 @@
 
 class PermutationGenerator {
 private:
-    std::vector<int> perm;
+    int numOfCities;
+    int *perm;
 public:
-    PermutationGenerator(std::vector<int>& perm);
+    PermutationGenerator(int *perm, int numOfCities);
 
     static void printVector(std::vector<int>& vect);
 
@@ -26,6 +27,8 @@ public:
     void swap(int a, int b);
 
     static int getNumOfPermutations(int numOfCities);
+
+
 };
 
 

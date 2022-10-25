@@ -8,44 +8,32 @@
 
 #include "MatrixManager.hpp"
 
-double MatrixManager::addDistances(std::vector<double> &routeDistances) {
-    double sum = 0;
-
-    for(double distance: routeDistances) {
-        sum += distance;
-    }
-
-    return sum;
-}
-
 // is a smaller than b
 bool MatrixManager::isSmallerDistance(double a, double b) {
     return a < b;
 }
 
-std::vector<std::vector<double>> MatrixManager::getMatrix(int numOfCities, std::string distancesFileName) {
-    std::vector<std::vector<double>> matrix;
-
-    // resize matrix to be numOfCities x numOfCities
-    matrix.resize(numOfCities);
-    for(auto & vector : matrix) {
-        vector.resize(numOfCities);
+double MatrixManager::computeDistance(const int route[], int numOfCities) {
+    double totalDistance = 0;
+    totalDistance += distances[0][route[0]];
+    for(int i = 1; i < numOfCities; i++) {
+        totalDistance += distances[route[i - 1]][route[i]];
     }
+    totalDistance += distances[route[numOfCities - 1]][0];
 
+    return totalDistance;
+}
+
+void MatrixManager::generateAdjacencyMatrix(int numOfCities, std::string distancesFileName) {
     // get distances from file
-    std::vector<double> distances = FileParser::getDistancesFromFile(distancesFileName);
-
-    if(distances.empty()) {
-        return matrix;
-    }
+    std::vector<double> allDistances = FileParser::getDistancesFromFile(distancesFileName);
 
     // set distance values into matrix
     int count = 0;
-    for (auto & vector : matrix) {
-        for (auto & distance : vector) {
-            distance = distances[count];
+    for (auto & adjArray : distances) {
+        for (auto & distance : adjArray) {
+            distance = allDistances[count];
             count++;
         }
     }
-    return matrix;
 }
