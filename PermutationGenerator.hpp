@@ -17,11 +17,11 @@ class PermutationGenerator {
 private:
     std::vector<int> perm;
 public:
-    PermutationGenerator(std::vector<int> perm);
+    PermutationGenerator(std::vector<int>& perm);
 
-    static void printVector(const std::vector<int> vect);
+    static void printVector(std::vector<int>& vect);
 
-    std::vector<int> getNextPermutation();
+    std::vector<int>& getNextPermutation();
 
     void swap(int a, int b);
 

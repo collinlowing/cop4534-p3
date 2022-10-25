@@ -8,11 +8,11 @@
 
 #include "PermutationGenerator.hpp"
 
-PermutationGenerator::PermutationGenerator(std::vector<int> perm) {
+PermutationGenerator::PermutationGenerator(std::vector<int>& perm) {
     this->perm = perm;
 }
 
-std::vector<int> PermutationGenerator::getNextPermutation() {
+std::vector<int>& PermutationGenerator::getNextPermutation() {
     int vectorSize = perm.size();
 
     int m, k, p , q;
@@ -35,7 +35,7 @@ std::vector<int> PermutationGenerator::getNextPermutation() {
         p++;
         q--;
     }
-    //printVector(perm);
+    printVector(perm);
     return perm;
 }
 
@@ -45,10 +45,10 @@ void PermutationGenerator::swap(int a, int b) {
     perm[b] = temp;
 }
 
-void PermutationGenerator::printVector(const std::vector<int> vect) {
+void PermutationGenerator::printVector(std::vector<int>& vect) {
     std::cout << "vector contains: ";
     for (int i: vect) {
-        std::cout << i << "
+        std::cout << i << " ";
     }
     std::cout << std::endl;
 }

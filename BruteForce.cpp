@@ -17,7 +17,7 @@ std::vector<int> BruteForce::performBruteForce() {
     std::vector<int> route = {};
     std::vector<double> distances = {};
     std::vector<int> currentRoute = {0};
-    double smallestDistance = DBL_MAX;
+    double smallestDistance;
     std::vector<int> smallestRoute = {};
 
     // initialize cities
@@ -33,28 +33,26 @@ std::vector<int> BruteForce::performBruteForce() {
     PermutationGenerator pg(route);
 
     // get the number of permutations to perform
-    int numOfPermutations = pg.getNumOfPermutations(numOfCities);
+    int numOfPermutations = PermutationGenerator::getNumOfPermutations(numOfCities - 1);
 
     // get adjacency matrix
     std::vector<std::vector<double>> distanceMatrix = MatrixManager::getMatrix(numOfCities, "distances.txt");
 
-    for(int permutationCount = 0; permutationCount < numOfPermutations; permutationCount++) {
-        // get distances for current route
-        for(int i = 0; i < currentRoute.size() - 1; i++) {
-            int start = currentRoute.at(i);
-            int next = currentRoute.at(i+1);
-            distances.push_back(distanceMatrix[start][next]);
-        }
+    // get distances for initial route
+    for(int i = 0; i < currentRoute.size() - 1; i++) {
+        int start = currentRoute.at(i);
+        int next = currentRoute.at(i + 1);
+        distances.push_back(distanceMatrix[start][next]);
+    }
 
-        // calculate distance for initial route
-        double currentDistance = MatrixManager::addDistances(distances);
+    // calculate distance for initial route
+    double currentDistance = MatrixManager::addDistances(distances);
 
-        // check if current distance is less than smallestRoute so far
-        if(MatrixManager::isSmallerDistance(currentDistance, smallestDistance)) {
-            smallestDistance = currentDistance;
-            smallestRoute = currentRoute;
-        }
+    // initialize the smallest route with first route
+    smallestDistance = currentDistance;
+    smallestRoute = currentRoute;
 
+    for(int permutationCount = 0; permutationCount < numOfPermutations - 1; permutationCount++) {
         // get new permutation
         route = pg.getNextPermutation();
 
@@ -65,6 +63,22 @@ std::vector<int> BruteForce::performBruteForce() {
         currentRoute.resize(route.size() + 1);
         currentRoute.insert(currentRoute.end(), route.begin(), route.end());
         currentRoute.push_back(0); // end with 0
+
+        // get distances for current route
+        for(int i = 0; i < currentRoute.size() - 1; i++) {
+            int start = currentRoute.at(i);
+            int next = currentRoute.at(i+1);
+            distances.push_back(distanceMatrix[start][next]);
+        }
+
+        // calculate distance for current route
+        currentDistance = MatrixManager::addDistances(distances);
+
+        // check if current distance is less than smallestRoute so far
+        if(MatrixManager::isSmallerDistance(currentDistance, smallestDistance)) {
+            smallestDistance = currentDistance;
+            smallestRoute = currentRoute;
+        }
     }
 
     PermutationGenerator::printVector(smallestRoute);
