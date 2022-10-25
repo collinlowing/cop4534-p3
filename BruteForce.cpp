@@ -25,8 +25,13 @@ std::vector<int> BruteForce::performBruteForce() {
         route.push_back(i);
     }
 
+    // initialize vector size for starting and ending cities not in route
+    currentRoute.resize(route.size() + 2);
+
     // append current route with initial route
-    currentRoute.insert(currentRoute.end(), route.begin(), route.end());
+    for(int i = 1; i < route.size(); i++) {
+        currentRoute[i] = route[i];
+    }
     currentRoute.push_back(0); // end with starting city. always 0
 
     // pass first route to PermutationGenerator object
@@ -39,14 +44,12 @@ std::vector<int> BruteForce::performBruteForce() {
     std::vector<std::vector<double>> distanceMatrix = MatrixManager::getMatrix(numOfCities, "distances.txt");
 
     // get distances for initial route
+    double currentDistance = 0.0;
     for(int i = 0; i < currentRoute.size() - 1; i++) {
         int start = currentRoute.at(i);
         int next = currentRoute.at(i + 1);
-        distances.push_back(distanceMatrix[start][next]);
+        currentDistance += distanceMatrix[start][next];
     }
-
-    // calculate distance for initial route
-    double currentDistance = MatrixManager::addDistances(distances);
 
     // initialize the smallest route with first route
     smallestDistance = currentDistance;
@@ -56,13 +59,10 @@ std::vector<int> BruteForce::performBruteForce() {
         // get new permutation
         route = pg.getNextPermutation();
 
-        // clear current route
-        currentRoute.clear();
-        // initialize new route permutation
-        currentRoute.push_back(0); // start with 0
-        currentRoute.resize(route.size() + 1);
-        currentRoute.insert(currentRoute.end(), route.begin(), route.end());
-        currentRoute.push_back(0); // end with 0
+        // insert route into currentRoute with beginning and ending cities as 0
+        for(int i = 1; i < currentRoute.size() - 1; i++) {
+            currentRoute[i] = route[i];
+        }
 
         // get distances for current route
         for(int i = 0; i < currentRoute.size() - 1; i++) {

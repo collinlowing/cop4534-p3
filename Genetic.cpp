@@ -16,20 +16,69 @@ Genetic::Genetic(int numOfCities, int generationSize, int numOfGenerations, doub
 }
 
 std::vector<int> Genetic::performGenetic() {
-    //PermutationGenerator pg;
-    std::vector<int> initialRoute;
-    std::vector<int> perm = {0};
+    std::vector<int> route = {};
+    std::vector<int> currentRoute = {0};
     std::vector<double> distances = {};
+    double smallestDistance;
+    std::vector<int> smallestRoute = {};
+    std::vector<std::vector<int>> mutations;
 
     // initialize first city route
     for (int i = 1; i < numOfCities; i++) {
-        initialRoute.push_back(i);
+        route.push_back(i);
     }
 
-    // initialize optimal route with first route
-    std::vector<int> optimalRoute = initialRoute;
+    // initialize PermutationGenerator with initial route
+    PermutationGenerator pg(route);
 
-    return std::vector<int>();
+    // get adjacency matrix
+    std::vector<std::vector<double>> distanceMatrix = MatrixManager::getMatrix(numOfCities, "distances.txt");
+
+    // get distances for initial route
+    for(int i = 0; i < currentRoute.size() - 1; i++) {
+        int start = currentRoute.at(i);
+        int next = currentRoute.at(i + 1);
+        distances.push_back(distanceMatrix[start][next]);
+    }
+
+    // calculate distance for initial route
+    double currentDistance = MatrixManager::addDistances(distances);
+
+    // initialize the smallest route with first route
+    smallestDistance = currentDistance;
+    smallestRoute = currentRoute;
+
+    for(int generationCount = 0; generationCount < numOfGenerations; generationCount++) {
+
+        // generate new generation of routes
+        for(int i = 0; i < generationSize; i++) {
+            // get new permutation
+            route = pg.getNextPermutation();
+
+            // insert route into currentRoute with beginning and ending cities as 0
+            for(int j = 1; j < currentRoute.size() - 1; j++) {
+                currentRoute[i] = route[i];
+            }
+
+            // get distances for current route
+            for(int j = 0; j < currentRoute.size() - 1; j++) {
+                int start = currentRoute.at(i);
+                int next = currentRoute.at(i+1);
+                distances.push_back(distanceMatrix[start][next]);
+            }
+
+            // calculate distance for current route
+            currentDistance = MatrixManager::addDistances(distances);
+
+            // check if current distance is less than smallestRoute so far
+            if(MatrixManager::isSmallerDistance(currentDistance, smallestDistance)) {
+                smallestDistance = currentDistance;
+                smallestRoute = currentRoute;
+            }
+        }
+    }
+
+    return smallestRoute;
 }
 
 std::vector<std::vector<int>>
