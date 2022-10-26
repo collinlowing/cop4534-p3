@@ -7,10 +7,12 @@
 
 TEST(MatrixManagerTests, getMatrix) {
     int numOfCities = 5;
-    std::vector<std::vector<double>> matrix = MatrixManager::getMatrix(numOfCities, "distances.txt");
+    MatrixManager mm;
+    double** matrix;
 
-    ASSERT_EQ(matrix.size(), 5);
-    ASSERT_EQ(matrix[0].size(), 5);
+    mm.generateAdjacencyMatrix(numOfCities, "distances.txt");
+
+    matrix = mm.getMatrix();
 
     double firstDistance = 25.410000;
 

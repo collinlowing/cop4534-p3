@@ -1,10 +1,11 @@
 /***************************************************************
-  Student Name: Collin Lowing
-  File Name: Genetic.cpp
-  Project 3
+Student Name: Collin Lowing
+File Name: Genetic.cpp
+Project 3
 
-  Attempts to find the optimal traversal with genetic algorithm
+Attempts to find the optimal traversal with genetic algorithm
 ***************************************************************/
+
 
 #include "Genetic.hpp"
 
@@ -15,72 +16,70 @@ Genetic::Genetic(int numOfCities, int generationSize, int numOfGenerations, doub
     this->mutationPercentage = mutationPercentage;
 }
 
-std::vector<int> Genetic::performGenetic() {
-    std::vector<int> route = {};
-    std::vector<int> currentRoute = {0};
-    std::vector<double> distances = {};
+int *Genetic::performGenetic() {
+    int *route = new int[numOfCities];
+    int *currentRoute = new int[numOfCities + 1];
     double smallestDistance;
-    std::vector<int> smallestRoute = {};
-    std::vector<std::vector<int>> mutations;
+    int *smallestRoute = new int[numOfCities + 1];
 
-    // initialize first city route
+    // initialize cities
     for (int i = 1; i < numOfCities; i++) {
-        route.push_back(i);
+        route[i - 1] = i;
     }
 
-    // initialize PermutationGenerator with initial route
-    PermutationGenerator pg(route);
+    currentRoute[0] = 0; // start with city 0
+    // append current route with initial route
+    for (int i = 1; i < numOfCities; i++) {
+        currentRoute[i] = route[i - 1];
+    }
+    currentRoute[numOfCities] = 0; // end with starting city. always 0
+
+    // pass first route to PermutationGenerator object
+    PermutationGenerator pg(route, numOfCities);
+
+    // get the number of permutations to perform
+    int numOfPermutations = PermutationGenerator::getNumOfPermutations(numOfCities - 1);
 
     // get adjacency matrix
-    std::vector<std::vector<double>> distanceMatrix = MatrixManager::getMatrix(numOfCities, "distances.txt");
+    mm.generateAdjacencyMatrix(numOfCities, "distances.txt");
 
     // get distances for initial route
-    for(int i = 0; i < currentRoute.size() - 1; i++) {
-        int start = currentRoute.at(i);
-        int next = currentRoute.at(i + 1);
-        distances.push_back(distanceMatrix[start][next]);
-    }
-
-    // calculate distance for initial route
-    double currentDistance = MatrixManager::addDistances(distances);
+    double currentDistance = mm.computeDistance(currentRoute, numOfCities);
 
     // initialize the smallest route with first route
     smallestDistance = currentDistance;
-    smallestRoute = currentRoute;
+    std::copy(currentRoute, currentRoute + (numOfCities + 1), smallestRoute);
 
-    for(int generationCount = 0; generationCount < numOfGenerations; generationCount++) {
+    for (int permutationCount = 0; permutationCount < numOfPermutations - 1; permutationCount++) {
+        // get new permutation
+        route = pg.getNextPermutation();
 
-        // generate new generation of routes
-        for(int i = 0; i < generationSize; i++) {
-            // get new permutation
-            route = pg.getNextPermutation();
+        // insert route into currentRoute with beginning and ending cities as 0
+        for (int i = 1; i < numOfCities - 1; i++) {
+            currentRoute[i] = route[i];
+        }
 
-            // insert route into currentRoute with beginning and ending cities as 0
-            for(int j = 1; j < currentRoute.size() - 1; j++) {
-                currentRoute[i] = route[i];
-            }
+        // get distances for current route
+        currentDistance = mm.computeDistance(currentRoute, numOfCities);
 
-            // get distances for current route
-            for(int j = 0; j < currentRoute.size() - 1; j++) {
-                int start = currentRoute.at(i);
-                int next = currentRoute.at(i+1);
-                distances.push_back(distanceMatrix[start][next]);
-            }
-
-            // calculate distance for current route
-            currentDistance = MatrixManager::addDistances(distances);
-
-            // check if current distance is less than smallestRoute so far
-            if(MatrixManager::isSmallerDistance(currentDistance, smallestDistance)) {
-                smallestDistance = currentDistance;
-                smallestRoute = currentRoute;
-            }
+        // check if current distance is less than smallestRoute so far
+        if (MatrixManager::isSmallerDistance(currentDistance, smallestDistance)) {
+            smallestDistance = currentDistance;
+            smallestRoute = currentRoute;
         }
     }
+
+    pg.printPermutation(smallestRoute, numOfCities + 1);
+    std::cout << "optimal route distance total: " << smallestDistance << std::endl;
+
+    delete[] route;
+    delete[] currentRoute;
 
     return smallestRoute;
 }
 
+
+/*
 std::vector<std::vector<int>>
 Genetic::mergeMatrix(std::vector<std::vector<int>> vectorA, std::vector<std::vector<int>> vectorB) {
     for (auto route: vectorB) {
@@ -89,20 +88,22 @@ Genetic::mergeMatrix(std::vector<std::vector<int>> vectorA, std::vector<std::vec
 
     return vectorA;
 }
+*/
 
-std::vector<int> Genetic::mutateRoute(std::vector<int> route) {
+
+int* Genetic::mutateRoute(int* route) {
     // get random index excluding start and end as that is always 0
-    int index1 = Genetic::getRandomIndex(1, route.size() - 1);
+    int index1 = Genetic::getRandomIndex(1, numOfCities - 1);
 
     // get the nextPermutation index
     int index2;
     // index must be different than first index
     do {
-        index2 = Genetic::getRandomIndex(1, route.size() - 1);
+        index2 = Genetic::getRandomIndex(1, numOfCities - 1);
     } while (index1 == index2);
 
     // swaps the two random indexes
-    std::swap(route.at(index1), route.at(index2));
+    std::swap(route[index1], route[index2]);
 
     return route;
 }
@@ -114,5 +115,3 @@ int Genetic::getRandomIndex(int min, int max) {
 
     return distr(gen);
 }
-
-

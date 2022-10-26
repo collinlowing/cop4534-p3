@@ -20,9 +20,9 @@ private:
 public:
     PermutationGenerator(int *perm, int numOfCities);
 
-    static void printVector(std::vector<int>& vect);
+    void printPermutation(int *permutation, int size);
 
-    std::vector<int>& getNextPermutation();
+    int *getNextPermutation();
 
     void swap(int a, int b);
 

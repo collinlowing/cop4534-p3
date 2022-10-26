@@ -19,7 +19,8 @@ private:
     MatrixManager mm;
 public:
     BruteForce(int numOfCities);
-    std::vector<int> performBruteForce();
+
+    int *performBruteForce();
 };
 
 

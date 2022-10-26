@@ -14,13 +14,19 @@
 
 class MatrixManager {
 private:
-    double distances[20][20];
+    double **distances;
 public:
+    MatrixManager();
+
     static bool isSmallerDistance(double a, double b);
 
     void generateAdjacencyMatrix(int numOfCities, std::string distancesFileName);
 
     double computeDistance(const int *route, int numOfCities);
+
+    double **getMatrix();
+
+    ~MatrixManager();
 };
 
 

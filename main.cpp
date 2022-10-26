@@ -29,7 +29,8 @@ int main() {
     std::cout << "What percent of generations will be mutations?" << std::endl;
     std::cin >> mutationPercentage;
 
-    /*std::cout << "starting genetic algorithm\n" << std::endl;
+
+    std::cout << "starting genetic algorithm\n" << std::endl;
 
     //get genetic result
     Genetic genetic(numOfCities, generationSize, numOfGenerations, mutationPercentage);
@@ -39,21 +40,25 @@ int main() {
     double elapsedSecondsGenetic =
             std::chrono::duration_cast<std::chrono::duration<double>>(finishGenetic - startGenetic).count();
 
-    std::cout << "finished in " << elapsedSecondsGenetic << " seconds" << std::endl;*/
+    std::cout << "finished in " << elapsedSecondsGenetic << " seconds" << std::endl;
+
 
     std::cout << "starting brute force algorithm\n" << std::endl;
 
     // get bruteforce results
     BruteForce bruteForce(numOfCities);
     auto startBruteForce = std::chrono::steady_clock::now();
-    std::vector<int> bruteForceOptimalPath = bruteForce.performBruteForce();
+    int *bruteForceOptimalPath = bruteForce.performBruteForce();
     auto finishBruteForce = std::chrono::steady_clock::now();
     double elapsedSecondsBruteForce =
             std::chrono::duration_cast<std::chrono::duration<double>>(finishBruteForce - startBruteForce).count();
 
     // print out brute force results
-    //PermutationGenerator::printVector(bruteForceOptimalPath);
+    //PermutationGenerator::printPermutation(bruteForceOptimalPath);
     std::cout << "finished in " << elapsedSecondsBruteForce << " seconds" << std::endl;
+
+
+    //delete [] bruteForceOptimalPath;
 
     return 0;
 }
