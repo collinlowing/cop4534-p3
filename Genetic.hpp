@@ -23,9 +23,8 @@ private:
 public:
     Genetic(int numOfCities, int generationSize, int numOfGenerations, double mutationPercentage);
 
-    int *performGenetic();
+    void performGenetic();
 
-    //double** mergeMatrix( vectorA, std::vector<std::vector<int>> vectorB);
     int *mutateRoute(int *route);
 
     static int getRandomIndex(int min, int max);

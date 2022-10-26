@@ -16,11 +16,11 @@ Genetic::Genetic(int numOfCities, int generationSize, int numOfGenerations, doub
     this->mutationPercentage = mutationPercentage;
 }
 
-int *Genetic::performGenetic() {
-    int *route = new int[numOfCities];
-    int *currentRoute = new int[numOfCities + 1];
+void Genetic::performGenetic() {
+    int *route = new int[20];
+    int *currentRoute = new int[20 + 1];
     double smallestDistance;
-    int *smallestRoute = new int[numOfCities + 1];
+    int *smallestRoute = new int[20 + 1];
 
     // initialize cities
     for (int i = 1; i < numOfCities; i++) {
@@ -37,59 +37,64 @@ int *Genetic::performGenetic() {
     // pass first route to PermutationGenerator object
     PermutationGenerator pg(route, numOfCities);
 
-    // get the number of permutations to perform
-    int numOfPermutations = PermutationGenerator::getNumOfPermutations(numOfCities - 1);
-
     // get adjacency matrix
     mm.generateAdjacencyMatrix(numOfCities, "distances.txt");
 
     // get distances for initial route
-    double currentDistance = mm.computeDistance(currentRoute, numOfCities);
+    double currentDistance = mm.computeDistance(currentRoute, numOfCities + 1);
 
     // initialize the smallest route with first route
     smallestDistance = currentDistance;
-    std::copy(currentRoute, currentRoute + (numOfCities + 1), smallestRoute);
+    for(int i = 0; i < numOfCities; i++) {
+        smallestRoute[i] = currentRoute[i];
+    }
 
-    for (int permutationCount = 0; permutationCount < numOfPermutations - 1; permutationCount++) {
-        // get new permutation
-        route = pg.getNextPermutation();
+    // get the number of permutations to mutate
+    int numOfMutations = generationSize * mutationPercentage;
 
-        // insert route into currentRoute with beginning and ending cities as 0
-        for (int i = 1; i < numOfCities - 1; i++) {
-            currentRoute[i] = route[i];
+    // counter for mutations created
+    int mutationCounter = 0;
+
+    // loop for the number of generations to perform
+    for(int generationCount = 0; generationCount < numOfGenerations; generationCount++) {
+        for(int permCount = 0; permCount < generationSize - 1; permCount++) { // excluding 1 elite
+            // get mutatedRoute
+            if (mutationCounter < numOfMutations) {
+                route = mutateRoute(route);
+                numOfMutations++;
+            }
+            else {
+                // get new permutation
+                route = pg.getNextPermutation();
+            }
+
+            // insert route into currentRoute with beginning and ending cities as 0
+            for (int i = 1; i < numOfCities; i++) {
+                currentRoute[i] = route[i - 1];
+            }
+
+            // get distances for current route
+            currentDistance = mm.computeDistance(currentRoute, numOfCities + 1);
+
+            // compare with elite
+            // check if current distance is less than smallest route so far
+            if (MatrixManager::isSmallerDistance(currentDistance, smallestDistance)) {
+                smallestDistance = currentDistance;
+                smallestRoute = currentRoute;
+            }
         }
-
-        // get distances for current route
-        currentDistance = mm.computeDistance(currentRoute, numOfCities);
-
-        // check if current distance is less than smallestRoute so far
-        if (MatrixManager::isSmallerDistance(currentDistance, smallestDistance)) {
-            smallestDistance = currentDistance;
-            smallestRoute = currentRoute;
-        }
+        // reset mutations
+        numOfMutations = 0;
     }
 
     pg.printPermutation(smallestRoute, numOfCities + 1);
     std::cout << "optimal route distance total: " << smallestDistance << std::endl;
 
-    delete[] route;
-    delete[] currentRoute;
-
-    return smallestRoute;
+    // clean up memory
+    //delete[] route;
+    //delete[] currentRoute;
+    //delete[] smallestRoute;
 }
-
-
-/*
-std::vector<std::vector<int>>
-Genetic::mergeMatrix(std::vector<std::vector<int>> vectorA, std::vector<std::vector<int>> vectorB) {
-    for (auto route: vectorB) {
-        vectorA.push_back(route);
-    }
-
-    return vectorA;
-}
-*/
-
 
 int* Genetic::mutateRoute(int* route) {
     // get random index excluding start and end as that is always 0

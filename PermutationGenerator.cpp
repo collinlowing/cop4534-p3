@@ -33,7 +33,7 @@ int *PermutationGenerator::getNextPermutation() {
         p++;
         q--;
     }
-    //printPermutation(perm, routeSize);
+    // printPermutation(perm, routeSize); // used for testing
     return perm;
 }
 
@@ -44,7 +44,7 @@ void PermutationGenerator::swap(int a, int b) {
 }
 
 void PermutationGenerator::printPermutation(int *permutation, int size) {
-    std::cout << "vector contains: ";
+    std::cout << "route: ";
     for (int i = 0; i < size; i++) {
         std::cout << permutation[i] << " ";
     }

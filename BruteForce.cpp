@@ -14,10 +14,10 @@ BruteForce::BruteForce(int numOfCities) {
 }
 
 int *BruteForce::performBruteForce() {
-    int *route = new int[numOfCities];
-    int *currentRoute = new int[numOfCities + 1];
+    int *route = new int[20];
+    int *currentRoute = new int[20 + 1];
     double smallestDistance;
-    int *smallestRoute = new int[numOfCities + 1];
+    int *smallestRoute = new int[20 + 1];
 
     // initialize cities
     for (int i = 1; i < numOfCities; i++) {
@@ -25,6 +25,7 @@ int *BruteForce::performBruteForce() {
     }
 
     currentRoute[0] = 0; // start with city 0
+
     // append current route with initial route
     for (int i = 1; i < numOfCities; i++) {
         currentRoute[i] = route[i - 1];
@@ -41,23 +42,25 @@ int *BruteForce::performBruteForce() {
     mm.generateAdjacencyMatrix(numOfCities, "distances.txt");
 
     // get distances for initial route
-    double currentDistance = mm.computeDistance(currentRoute, numOfCities);
+    double currentDistance = mm.computeDistance(currentRoute, numOfCities + 1);
 
     // initialize the smallest route with first route
     smallestDistance = currentDistance;
-    std::copy(currentRoute, currentRoute + (numOfCities + 1), smallestRoute);
+    for(int i = 0; i < numOfCities; i++) {
+        smallestRoute[i] = currentRoute[i];
+    }
 
     for (int permutationCount = 0; permutationCount < numOfPermutations - 1; permutationCount++) {
         // get new permutation
         route = pg.getNextPermutation();
 
         // insert route into currentRoute with beginning and ending cities as 0
-        for (int i = 1; i < numOfCities - 1; i++) {
-            currentRoute[i] = route[i];
+        for (int i = 1; i < numOfCities; i++) {
+            currentRoute[i] = route[i - 1];
         }
 
         // get distances for current route
-        currentDistance = mm.computeDistance(currentRoute, numOfCities);
+        currentDistance = mm.computeDistance(currentRoute, numOfCities + 1);
 
         // check if current distance is less than smallestRoute so far
         if (MatrixManager::isSmallerDistance(currentDistance, smallestDistance)) {

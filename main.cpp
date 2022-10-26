@@ -26,11 +26,17 @@ int main() {
     std::cout << "How many generations are to run?" << std::endl;
     std::cin >> numOfGenerations;
 
-    std::cout << "What percent of generations will be mutations?" << std::endl;
+    std::cout << "What percent of generations will be mutations? (0.00 to 1.00)" << std::endl;
     std::cin >> mutationPercentage;
 
+    // check for user error
+    while(mutationPercentage < 0 || mutationPercentage > 1) {
+        std::cout << "Percent must be greater than 0 and less than 1" << std::endl;
+        std::cin >> mutationPercentage;
+    }
 
-    std::cout << "starting genetic algorithm\n" << std::endl;
+
+    std::cout << std::endl << "starting genetic algorithm\n" << std::endl;
 
     //get genetic result
     Genetic genetic(numOfCities, generationSize, numOfGenerations, mutationPercentage);
@@ -43,7 +49,7 @@ int main() {
     std::cout << "finished in " << elapsedSecondsGenetic << " seconds" << std::endl;
 
 
-    std::cout << "starting brute force algorithm\n" << std::endl;
+    std::cout << std::endl << "starting brute force algorithm\n" << std::endl;
 
     // get bruteforce results
     BruteForce bruteForce(numOfCities);
