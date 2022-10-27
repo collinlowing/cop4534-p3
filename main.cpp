@@ -11,6 +11,10 @@
 #include "BruteForce.hpp"
 #include "Genetic.hpp"
 
+double getPercentageOf(double a, double b) {
+    return (a / b) * 100;
+}
+
 int main() {
     int numOfCities;
     int generationSize;
@@ -41,7 +45,7 @@ int main() {
     //get genetic result
     Genetic genetic(numOfCities, generationSize, numOfGenerations, mutationPercentage);
     auto startGenetic = std::chrono::steady_clock::now();
-    genetic.performGenetic();
+    double geneticCost = genetic.performGenetic();
     auto finishGenetic = std::chrono::steady_clock::now();
     double elapsedSecondsGenetic =
             std::chrono::duration_cast<std::chrono::duration<double>>(finishGenetic - startGenetic).count();
@@ -54,17 +58,16 @@ int main() {
     // get bruteforce results
     BruteForce bruteForce(numOfCities);
     auto startBruteForce = std::chrono::steady_clock::now();
-    int *bruteForceOptimalPath = bruteForce.performBruteForce();
+    double bruteForceCost = bruteForce.performBruteForce();
     auto finishBruteForce = std::chrono::steady_clock::now();
     double elapsedSecondsBruteForce =
             std::chrono::duration_cast<std::chrono::duration<double>>(finishBruteForce - startBruteForce).count();
 
-    // print out brute force results
-    //PermutationGenerator::printPermutation(bruteForceOptimalPath);
     std::cout << "finished in " << elapsedSecondsBruteForce << " seconds" << std::endl;
 
-
-    //delete [] bruteForceOptimalPath;
+    // get percentage of optimal cost
+    std::cout << std::endl << "the genetic algorithm performed " << getPercentageOf(geneticCost, bruteForceCost)
+            << "% of the optimal cost" << std::endl;
 
     return 0;
 }

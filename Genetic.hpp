@@ -20,10 +20,11 @@ private:
     int numOfGenerations;
     double mutationPercentage;
     MatrixManager mm;
+    int MAX_CITIES = 20;
 public:
     Genetic(int numOfCities, int generationSize, int numOfGenerations, double mutationPercentage);
 
-    void performGenetic();
+    double performGenetic();
 
     int *mutateRoute(int *route);
 

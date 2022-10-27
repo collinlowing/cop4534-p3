@@ -17,10 +17,11 @@ class BruteForce {
 private:
     int numOfCities;
     MatrixManager mm;
+    int MAX_CITIES = 20;
 public:
     BruteForce(int numOfCities);
 
-    int *performBruteForce();
+    double performBruteForce();
 };
 
 

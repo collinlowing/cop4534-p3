@@ -13,11 +13,11 @@ BruteForce::BruteForce(int numOfCities) {
     this->numOfCities = numOfCities;
 }
 
-int *BruteForce::performBruteForce() {
-    int *route = new int[20];
-    int *currentRoute = new int[20 + 1];
+double BruteForce::performBruteForce() {
+    int *route = new int[MAX_CITIES];
+    int *currentRoute = new int[MAX_CITIES + 1];
     double smallestDistance;
-    int *smallestRoute = new int[20 + 1];
+    int *smallestRoute = new int[MAX_CITIES + 1];
 
     // initialize cities
     for (int i = 1; i < numOfCities; i++) {
@@ -75,6 +75,6 @@ int *BruteForce::performBruteForce() {
     delete[] route;
     delete[] currentRoute;
 
-    return smallestRoute;
+    return smallestDistance;
 }
 

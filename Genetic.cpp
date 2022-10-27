@@ -16,11 +16,11 @@ Genetic::Genetic(int numOfCities, int generationSize, int numOfGenerations, doub
     this->mutationPercentage = mutationPercentage;
 }
 
-void Genetic::performGenetic() {
-    int *route = new int[20];
-    int *currentRoute = new int[20 + 1];
+double Genetic::performGenetic() {
+    int *route = new int[MAX_CITIES];
+    int *currentRoute = new int[MAX_CITIES + 1];
     double smallestDistance;
-    int *smallestRoute = new int[20 + 1];
+    int *smallestRoute = new int[MAX_CITIES + 1];
 
     // initialize cities
     for (int i = 1; i < numOfCities; i++) {
@@ -88,23 +88,25 @@ void Genetic::performGenetic() {
     }
 
     pg.printPermutation(smallestRoute, numOfCities + 1);
-    std::cout << "optimal route distance total: " << smallestDistance << std::endl;
+    std::cout << "route distance total: " << smallestDistance << std::endl;
 
     // clean up memory
-    //delete[] route;
-    //delete[] currentRoute;
-    //delete[] smallestRoute;
+    delete[] route;
+    delete[] currentRoute;
+
+    return smallestDistance;
 }
 
 int* Genetic::mutateRoute(int* route) {
     // get random index excluding start and end as that is always 0
-    int index1 = Genetic::getRandomIndex(1, numOfCities - 1);
+    int index1 = Genetic::getRandomIndex(1, numOfCities - 2);
 
     // get the nextPermutation index
     int index2;
+
     // index must be different than first index
     do {
-        index2 = Genetic::getRandomIndex(1, numOfCities - 1);
+        index2 = Genetic::getRandomIndex(1, numOfCities - 2);
     } while (index1 == index2);
 
     // swaps the two random indexes
@@ -114,6 +116,7 @@ int* Genetic::mutateRoute(int* route) {
 }
 
 int Genetic::getRandomIndex(int min, int max) {
+
     std::random_device rd; // obtain a random number from hardware
     std::mt19937 gen(rd()); // input seed into generator
     std::uniform_int_distribution<> distr(min, max); // define the range
